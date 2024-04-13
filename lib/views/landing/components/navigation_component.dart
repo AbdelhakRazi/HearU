@@ -17,9 +17,10 @@ class NavigationComponent extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Measures.basicRadius),
           color: AppColors.white),
-      padding: const EdgeInsets.symmetric(
-          horizontal: Measures.leftRightPadding,
-          vertical: Measures.topBottomPadding),
+      padding: const EdgeInsets.only(
+          left: Measures.leftRightPadding,
+          right: Measures.leftRightPadding,
+          bottom: Measures.topBottomPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,7 +33,7 @@ class NavigationComponent extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const Spacer(),
-          const Flexible(child: AuthenticationRow()),
+          const Expanded(flex: 2, child: AuthenticationRow()),
           const Spacer(),
         ],
       ),

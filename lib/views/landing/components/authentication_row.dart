@@ -9,6 +9,7 @@ class AuthenticationRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SSOButton(icon: FontAwesomeIcons.apple, onPressed: () {}),
         SSOButton(icon: FontAwesomeIcons.google, onPressed: () {}),
