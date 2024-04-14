@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hearu/config/injection_locator.dart';
 import 'package:hearu/config/theme.dart';
 import 'package:hearu/state/onboarding_animation/onboarding_animation_bloc.dart';
-import 'package:hearu/views/landing/landing.dart';
 import 'package:hearu/views/onboarding/onboarding.dart';
 
 void main() {

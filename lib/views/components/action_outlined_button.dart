@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:hearu/config/colors.dart';
-import 'package:hearu/views/components/action_button.dart';
 
 class ActionOutlinedButton extends StatelessWidget {
   final VoidCallback onPressed;

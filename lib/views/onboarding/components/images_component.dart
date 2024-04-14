@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hearu/config/measures.dart';
-import 'package:hearu/config/spacing_widgets.dart';
 import 'package:hearu/state/onboarding_animation/onboarding_animation_bloc.dart';
 
 import 'package:hearu/views/components/glassmorphic_background.dart';
