@@ -50,6 +50,7 @@ class ActionOutlinedButton extends StatelessWidget {
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.white,
+                  foregroundColor: AppColors.blueMain,
                   side: const BorderSide(color: AppColors.dark, width: 1.5)),
             ),
           ),

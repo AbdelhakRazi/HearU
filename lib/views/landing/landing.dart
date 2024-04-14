@@ -14,21 +14,26 @@ class Landing extends StatelessWidget {
     return Scaffold(
         body: Stack(
       children: [
-        Positioned(top: 0, child: SizedBox(
-        height: screenSize.height * 0.63,
-        width: screenSize.width,
-        child:GlassmorphicBackground(
-          child: Center(
-            child: SvgPicture.asset(
-                Assets.logo,
-                height: 100,
-                width: 100,
-              ),
-          ),
-        ))),
-        Positioned(bottom: 0, child: SizedBox(
-      height: screenSize.height * 0.37,
-      width: screenSize.width, child: const NavigationComponent()))
+        Positioned(
+            top: 0,
+            child: SizedBox(
+                height: screenSize.height * 0.63,
+                width: screenSize.width,
+                child: GlassmorphicBackground(
+                  child: Center(
+                    child: SvgPicture.asset(
+                      Assets.logo,
+                      height: 100,
+                      width: 100,
+                    ),
+                  ),
+                ))),
+        Positioned(
+            bottom: 0,
+            child: SizedBox(
+                height: screenSize.height * 0.4,
+                width: screenSize.width,
+                child: const NavigationComponent()))
       ],
     ));
   }

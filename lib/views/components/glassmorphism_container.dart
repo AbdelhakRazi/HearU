@@ -16,7 +16,7 @@ class GlassMorphism extends StatelessWidget {
         sigmaX: 60,
         sigmaY: 60,
       ),
-      child: Container(color: AppColors.purple.withOpacity(0.07), child: child),
+      child: Container(color: AppColors.purple.withOpacity(0.05), child: child),
     );
   }
 }

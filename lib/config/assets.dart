@@ -7,9 +7,9 @@ class Assets {
       "with hearU your imagination knows no bounds";
   static const List<String> onboardingTitles = [
     "Record audio and get text:",
-    "Organize your recordings",
-    "Customize your folders",
-    "Easily share your recordings"
+    "Organize your recordings:",
+    "Customize your folders:",
+    "Easily share your recordings:"
   ];
   static const List<String> onboardingBody = [
     "Quickly convert your recordings into text notes",
@@ -18,9 +18,9 @@ class Assets {
     "Share audio files in MP3 format and share notes to friends and colleagues"
   ];
   static const List<String> onboardingImages = [
-    "first_onboarding.jpg", // add prefix assets/images afterwards
-    "second_onboarding.jpg",
-    "third_onboarding.jpg",
-    "fourth_onboarding.jpg"
+    "first_onboarding.png", // add prefix assets/images afterwards
+    "second_onboarding.png",
+    "third_onboarding.png",
+    "fourth_onboarding.png"
   ];
 }

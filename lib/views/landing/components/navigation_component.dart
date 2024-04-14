@@ -13,11 +13,17 @@ class NavigationComponent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Measures.basicRadius),
-          color: AppColors.white),
-      padding: const EdgeInsets.only(
-          left: Measures.leftRightPadding,
-          right: Measures.leftRightPadding,
-          bottom: Measures.topBottomPadding),
+          color: AppColors.white,
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.dark.withOpacity(0.1),
+                offset: const Offset(0, -5),
+                blurRadius: 20,
+                spreadRadius: 50)
+          ]),
+      padding: const EdgeInsets.symmetric(
+          horizontal: Measures.leftRightPadding,
+          vertical: Measures.topBottomPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

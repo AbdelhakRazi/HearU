@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hearu/config/colors.dart';
 import 'package:hearu/views/components/glassmorphism_container.dart';
 
-
 class GlassmorphicBackground extends StatelessWidget {
   final Widget child;
   const GlassmorphicBackground({
@@ -43,9 +42,7 @@ class GlassmorphicBackground extends StatelessWidget {
           ),
         ),
         Positioned.fill(
-            top: 0,
-            child: GlassMorphism(
-                child: child)),
+            top: 0, child: GlassMorphism(child: SafeArea(child: child))),
       ],
     );
   }

@@ -19,7 +19,7 @@ class OnBoarding extends StatelessWidget {
         Positioned(
             bottom: 0,
             child: SizedBox(
-                height: screenSize.height * 0.37,
+                height: screenSize.height * 0.4,
                 width: screenSize.width,
                 child: const OnBoardingActions()))
       ],

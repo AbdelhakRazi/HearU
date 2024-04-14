@@ -13,7 +13,6 @@ class AnimatedActionButtons extends StatefulWidget {
 }
 
 class _AnimatedActionButtonsState extends State<AnimatedActionButtons> {
-  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,9 +22,8 @@ class _AnimatedActionButtonsState extends State<AnimatedActionButtons> {
         Flexible(
           child: TextButton(
             onPressed: () {
-              index--;
               BlocProvider.of<OnboardingAnimationBloc>(context)
-                  .add(OnPreviousClick(newIndex: index));
+                  .add(OnPreviousClick());
             },
             child: const Text("Skip", style: TextStyle(color: AppColors.dark)),
           ),
@@ -33,9 +31,8 @@ class _AnimatedActionButtonsState extends State<AnimatedActionButtons> {
         Flexible(
           child: ActionOutlinedButton.withIcon(
             onPressed: () {
-              index++;
               BlocProvider.of<OnboardingAnimationBloc>(context)
-                  .add(OnNextClick(newIndex: index));
+                  .add(OnNextClick());
             },
             trailingIcon: FontAwesomeIcons.arrowRightLong,
             text: 'Next',

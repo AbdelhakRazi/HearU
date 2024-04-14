@@ -4,4 +4,5 @@ class Measures {
   static const double leftRightPadding = 16;
   static const double smallPadding = 12;
   static const double topBottomPadding = 10;
+  static const double imagesPadding = 60;
 }
