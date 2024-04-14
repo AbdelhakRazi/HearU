@@ -44,8 +44,10 @@ class _ImagesComponentState extends State<ImagesComponent> {
                     duration: const Duration(milliseconds: 300),
                     child: Padding(
                       padding: const EdgeInsets.all(Measures.imagesPadding),
-                      child: Image.asset(
-                        "assets/images/${Assets.onboardingImages[index]}",
+                      child: Center(
+                        child: Image.asset(
+                          "assets/images/${Assets.onboardingImages[index]}",
+                        ),
                       ),
                     ))),
           ));
