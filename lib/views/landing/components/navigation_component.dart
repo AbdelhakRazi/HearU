@@ -10,10 +10,7 @@ class NavigationComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return Container(
-      height: screenSize.height * 0.37,
-      width: screenSize.width,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Measures.basicRadius),
           color: AppColors.white),

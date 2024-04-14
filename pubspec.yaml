@@ -43,6 +43,8 @@ dependencies:
   flutter_svg: ^2.0.10+1
   google_fonts: ^6.2.1
   font_awesome_flutter: ^10.7.0
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.5
 
 dev_dependencies:
   injectable_generator: ^2.6.1
@@ -73,6 +75,7 @@ flutter:
   assets:
     - assets/audios_test/placeholder.mp3
     - assets/logo/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
