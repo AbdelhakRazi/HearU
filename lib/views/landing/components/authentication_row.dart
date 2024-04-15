@@ -5,7 +5,8 @@ import '../../components/action_button.dart';
 import 'sso_button.dart';
 
 class AuthenticationRow extends StatelessWidget {
-  const AuthenticationRow({super.key});
+  final String title;
+  const AuthenticationRow({super.key, required this.title});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,7 +20,7 @@ class AuthenticationRow extends StatelessWidget {
             child: ActionButton.withIcon(
               onPressed: () {},
               trailingIcon: FontAwesomeIcons.arrowRightLong,
-              text: 'Sign in',
+              text: title,
             )),
       ],
     );

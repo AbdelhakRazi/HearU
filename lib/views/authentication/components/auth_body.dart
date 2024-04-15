@@ -1,13 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:hearu/config/assets.dart';
+
 import 'package:hearu/config/colors.dart';
 import 'package:hearu/config/measures.dart';
+import 'package:hearu/config/spacing_widgets.dart';
+import 'package:hearu/views/authentication/components/auth_input.dart';
+import 'package:hearu/views/landing/components/authentication_row.dart';
 
-import 'authentication_row.dart';
-
-class NavigationComponent extends StatelessWidget {
-  const NavigationComponent({super.key});
-
+class AuthBody extends StatelessWidget {
+  final String title;
+  final List<AuthInput> authInputs;
+  AuthBody({
+    super.key,
+    required this.title,
+    required this.authInputs,
+  });
+  final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,15 +36,17 @@ class NavigationComponent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            Assets.landingTitle,
-            style: Theme.of(context).textTheme.titleLarge,
+            title,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          Text(
-            Assets.landingBody,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
+          SpacingWidgets.emptyHeight,
+          Form(
+              key: formKey,
+              child: Column(
+                  children: List.generate(
+                      authInputs.length, (index) => authInputs[index]))),
           const Spacer(),
-          const Expanded(flex: 2, child: AuthenticationRow(title: "Sign in")),
+          Expanded(flex: 2, child: AuthenticationRow(title: title)),
           const Spacer(),
         ],
       ),

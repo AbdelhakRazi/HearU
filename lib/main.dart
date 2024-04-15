@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hearu/config/injection_locator.dart';
 import 'package:hearu/config/theme.dart';
 import 'package:hearu/state/onboarding_animation/onboarding_animation_bloc.dart';
+import 'package:hearu/views/authentication/login/login.dart';
+import 'package:hearu/views/authentication/register/register.dart';
 import 'package:hearu/views/onboarding/onboarding.dart';
 
 void main() {
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
-          home: const OnBoarding()),
+          home: const Register()),
     );
   }
 }
