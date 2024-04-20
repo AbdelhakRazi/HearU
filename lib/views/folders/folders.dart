@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hearu/config/measures.dart';
 import 'package:hearu/model/folder.dart';
 import 'package:hearu/views/folders/components/folders_app_bar.dart';
 import 'package:hearu/views/folders/components/folders_bottom_bar.dart';
@@ -19,24 +21,18 @@ class _FoldersState extends State<Folders> {
       body: CustomScrollView(
         slivers: [
           const FoldersAppBar(),
-          FoldersCards(
-            folders: [
-              Folder(
-                  name: "abdeka",
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: Measures.leftRightPadding),
+            sliver: FoldersCards(
+                folders: List.generate(
+              20,
+              (index) => Folder(
+                  name: "My Folder",
                   nbRecords: 5,
                   creationDate: "date",
                   totalLength: 50.4),
-              Folder(
-                  name: "abdeka",
-                  nbRecords: 5,
-                  creationDate: "date",
-                  totalLength: 50.4),
-              Folder(
-                  name: "abdeka",
-                  nbRecords: 5,
-                  creationDate: "date",
-                  totalLength: 50.4),
-            ],
+            )),
           ),
         ],
       ),

@@ -13,9 +13,19 @@ class FoldersCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList.builder(
-      itemBuilder: (context, index) => FolderCard(folder: folders[index]),
-      itemCount: folders.length,
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Text(
+            "Folders",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        SliverList.builder(
+          itemBuilder: (context, index) => FolderCard(folder: folders[index]),
+          itemCount: folders.length,
+        ),
+      ],
     );
   }
 }

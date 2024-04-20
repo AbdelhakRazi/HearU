@@ -63,6 +63,10 @@ class AppTheme {
             fontSize: 30, fontWeight: FontWeight.bold, color: AppColors.dark),
         titleMedium: GoogleFonts.urbanist(
             fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.dark),
+        titleSmall: GoogleFonts.urbanist(
+            fontSize: 20,
+            color: AppColors.baseWhite,
+            fontWeight: FontWeight.w600),
         bodyLarge: GoogleFonts.urbanist(fontSize: 14, color: AppColors.dark),
       ));
 }
