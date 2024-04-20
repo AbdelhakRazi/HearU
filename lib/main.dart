@@ -5,6 +5,7 @@ import 'package:hearu/config/theme.dart';
 import 'package:hearu/state/onboarding_animation/onboarding_animation_bloc.dart';
 import 'package:hearu/views/authentication/login/login.dart';
 import 'package:hearu/views/authentication/register/register.dart';
+import 'package:hearu/views/folders/folders.dart';
 import 'package:hearu/views/onboarding/onboarding.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
-          home: const Register()),
+          home: const Folders()),
     );
   }
 }
