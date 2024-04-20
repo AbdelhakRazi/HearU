@@ -7,14 +7,20 @@ import 'package:hearu/config/spacing_widgets.dart';
 import 'package:hearu/views/authentication/components/auth_input.dart';
 import 'package:hearu/views/landing/components/authentication_row.dart';
 
-class AuthBody extends StatelessWidget {
+class AuthBody extends StatefulWidget {
   final String title;
   final List<AuthInput> authInputs;
-  AuthBody({
-    super.key,
+  const AuthBody({
+    Key? key,
     required this.title,
     required this.authInputs,
-  });
+  }) : super(key: key);
+
+  @override
+  State<AuthBody> createState() => _AuthBodyState();
+}
+
+class _AuthBodyState extends State<AuthBody> {
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -36,17 +42,22 @@ class AuthBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            widget.title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SpacingWidgets.emptyHeight,
           Form(
               key: formKey,
               child: Column(
-                  children: List.generate(
-                      authInputs.length, (index) => authInputs[index]))),
+                  children: List.generate(widget.authInputs.length,
+                      (index) => widget.authInputs[index]))),
           const Spacer(),
-          Expanded(flex: 2, child: AuthenticationRow(title: title)),
+          Expanded(
+              flex: 2,
+              child: AuthenticationRow(
+                title: widget.title,
+                formKey: formKey,
+              )),
           const Spacer(),
         ],
       ),

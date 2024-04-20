@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -6,7 +7,12 @@ import 'sso_button.dart';
 
 class AuthenticationRow extends StatelessWidget {
   final String title;
-  const AuthenticationRow({super.key, required this.title});
+  GlobalKey<FormState>? formKey;
+  AuthenticationRow({
+    super.key,
+    required this.title,
+    this.formKey,
+  });
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -18,7 +24,11 @@ class AuthenticationRow extends StatelessWidget {
         Expanded(
             flex: 2,
             child: ActionButton.withIcon(
-              onPressed: () {},
+              onPressed: () {
+                if (formKey != null) {
+                  formKey!.currentState!.validate();
+                }
+              },
               trailingIcon: FontAwesomeIcons.arrowRightLong,
               text: title,
             )),

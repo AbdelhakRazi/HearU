@@ -48,7 +48,10 @@ class AppTheme {
             borderSide: const BorderSide(width: 0.5, color: AppColors.dark),
             borderRadius: BorderRadius.circular(Measures.basicRadius)),
         errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 0.5, color: AppColors.dark),
+            borderSide: const BorderSide(width: 0.5, color: AppColors.red),
+            borderRadius: BorderRadius.circular(Measures.basicRadius)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 0.5, color: AppColors.red),
             borderRadius: BorderRadius.circular(Measures.basicRadius)),
         hintStyle: GoogleFonts.urbanist(
             fontSize: 14, color: AppColors.dark.withOpacity(0.5)),

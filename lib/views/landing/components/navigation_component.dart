@@ -36,7 +36,7 @@ class NavigationComponent extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const Spacer(),
-          const Expanded(flex: 2, child: AuthenticationRow(title: "Sign in")),
+          Expanded(flex: 2, child: AuthenticationRow(title: "Sign in")),
           const Spacer(),
         ],
       ),
