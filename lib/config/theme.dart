@@ -10,6 +10,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.baseWhite,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+            foregroundColor: AppColors.dark, // set text color
             textStyle: GoogleFonts.urbanist(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,

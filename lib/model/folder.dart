@@ -4,8 +4,8 @@ import 'dart:convert';
 class Folder {
   String name;
   int nbRecords;
-  String creationDate;
-  double totalLength;
+  DateTime creationDate;
+  int totalLength;
   Folder({
     required this.name,
     required this.nbRecords,
@@ -16,8 +16,8 @@ class Folder {
   Folder copyWith({
     String? name,
     int? nbRecords,
-    String? creationDate,
-    double? totalLength,
+    DateTime? creationDate,
+    int? totalLength,
   }) {
     return Folder(
       name: name ?? this.name,
@@ -31,7 +31,7 @@ class Folder {
     return <String, dynamic>{
       'name': name,
       'nbRecords': nbRecords,
-      'creationDate': creationDate,
+      'creationDate': creationDate.millisecondsSinceEpoch,
       'totalLength': totalLength,
     };
   }
@@ -40,8 +40,9 @@ class Folder {
     return Folder(
       name: map['name'] as String,
       nbRecords: map['nbRecords'] as int,
-      creationDate: map['creationDate'] as String,
-      totalLength: map['totalLength'] as double,
+      creationDate:
+          DateTime.fromMillisecondsSinceEpoch(map['creationDate'] as int),
+      totalLength: map['totalLength'] as int,
     );
   }
 

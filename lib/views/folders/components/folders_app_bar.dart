@@ -8,19 +8,12 @@ class FoldersAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverAppBar(
-      leading: Icon(
-        FontAwesomeIcons.chevronLeft,
-        color: AppColors.dark,
-      ),
+    return SliverAppBar(
       actions: [
-        Icon(
-          FontAwesomeIcons.magnifyingGlass,
-          color: AppColors.dark,
+        TextButton(
+          onPressed: () {},
+          child: const Text("MODIFIER"),
         ),
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: Measures.smallPadding),
-            child: Icon(FontAwesomeIcons.ellipsis))
       ],
     );
   }

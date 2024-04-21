@@ -16,25 +16,27 @@ class Folders extends StatefulWidget {
 class _FoldersState extends State<Folders> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: const FoldersBottomNavbar(),
-      body: CustomScrollView(
-        slivers: [
-          const FoldersAppBar(),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: Measures.leftRightPadding),
-            sliver: FoldersCards(
-                folders: List.generate(
-              20,
-              (index) => Folder(
-                  name: "My Folder",
-                  nbRecords: 5,
-                  creationDate: "date",
-                  totalLength: 50.4),
-            )),
-          ),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: const FoldersBottomNavbar(),
+        body: CustomScrollView(
+          slivers: [
+            const FoldersAppBar(),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Measures.leftRightPadding),
+              sliver: FoldersCards(
+                  folders: List.generate(
+                20,
+                (index) => Folder(
+                    name: "My Folder",
+                    nbRecords: 5,
+                    creationDate: DateTime.now(),
+                    totalLength: 50),
+              )),
+            ),
+          ],
+        ),
       ),
     );
   }
