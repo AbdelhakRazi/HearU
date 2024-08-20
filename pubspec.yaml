@@ -36,7 +36,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   permission_handler: ^11.3.1
-  flutter_sound: ^9.4.6
   injectable: ^2.4.1
   web_socket_channel: ^2.4.5
   get_it: ^7.6.9
@@ -47,6 +46,14 @@ dependencies:
   flutter_bloc: ^8.1.5
   intl: ^0.19.0
   flutter_slidable: ^3.1.0
+  flutter_sound: ^9.10.5
+  archive: ^3.6.1
+  aws_common: ^0.7.1
+  aws_signature_v4: ^0.6.1
+  convert: ^3.1.1
+  crypto: ^3.0.5
+  http2: ^2.3.0
+  uuid: ^4.4.2
 
 dev_dependencies:
   injectable_generator: ^2.6.1

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -9,7 +10,7 @@ import 'recorder_service.dart';
 
 class FlutterSoundRecorderService extends RecorderService {
   FlutterSoundRecorder recorder;
-  StreamController<Food> audioRecorderController;
+  StreamController<Uint8List> audioRecorderController;
   FlutterSoundRecorderService({
     required this.recorder,
     required this.audioRecorderController,
