@@ -1,20 +1,24 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_sound (9.4.6):
+  - flutter_sound (9.11.2):
     - Flutter
-    - flutter_sound_core (= 9.4.6)
-  - flutter_sound_core (9.4.6)
+    - flutter_sound_core (= 9.11.2)
+  - flutter_sound_core (9.11.2)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -29,14 +33,17 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_sound: d1ed7b8bac3c4513ac5ef8b90c15f3a6b860291b
-  flutter_sound_core: 46f6f56752a209dcc72be9f09b71c8b626f70d49
-  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  flutter_sound: aa796ea2a7c3a243b4aa795f70572837bdf01cbe
+  flutter_sound_core: 88f0e9d775505f790a8d9d0aed784be47ad9b3c0
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
 
-PODFILE CHECKSUM: aac8ccf0208e1b59447997388cc6a7c4f9173bcd
+PODFILE CHECKSUM: ba7b38e9697dfed8f0ed4695ee404b5c6fccc428
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.16.2
