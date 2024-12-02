@@ -1,10 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:hearu/utils/input_validation.dart';
 import 'package:hearu/views/authentication/components/auth_input.dart';
 import 'package:hearu/views/authentication/components/auth_layout.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  final bool showBackButton; // New property
+
+  const Login({
+    super.key,
+    this.showBackButton = false,
+  });
 
   @override
   State<Login> createState() => _LoginState();
@@ -21,6 +28,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return AuthLayout(
+      showBackButton: widget.showBackButton,
+      isLogin: true,
       title: "Sign in",
       authInputs: [
         AuthInput(

@@ -57,17 +57,18 @@ class AppTheme {
         hintStyle: GoogleFonts.urbanist(
             fontSize: 14, color: AppColors.dark.withOpacity(0.5)),
       ),
-      textTheme: TextTheme(
-        labelLarge: GoogleFonts.urbanist(
+      textTheme: GoogleFonts.urbanistTextTheme(const TextTheme(
+        labelLarge: TextStyle(
             fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.dark),
-        titleLarge: GoogleFonts.urbanist(
+        titleLarge: TextStyle(
             fontSize: 30, fontWeight: FontWeight.bold, color: AppColors.dark),
-        titleMedium: GoogleFonts.urbanist(
+        titleMedium: TextStyle(
             fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.dark),
-        titleSmall: GoogleFonts.urbanist(
+        titleSmall: TextStyle(
             fontSize: 20,
             color: AppColors.baseWhite,
             fontWeight: FontWeight.w600),
-        bodyLarge: GoogleFonts.urbanist(fontSize: 14, color: AppColors.dark),
-      ));
+        bodyLarge: TextStyle(fontSize: 14, color: AppColors.dark),
+        bodyMedium: TextStyle(fontSize: 14, color: AppColors.blueMain),
+      )));
 }

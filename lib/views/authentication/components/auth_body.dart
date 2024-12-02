@@ -9,12 +9,18 @@ import 'package:hearu/views/landing/components/authentication_row.dart';
 
 class AuthBody extends StatefulWidget {
   final String title;
+  final String isAccountTitle;
+  final String isAccountSubtitle;
   final List<AuthInput> authInputs;
+  final VoidCallback onTap;
   const AuthBody({
-    Key? key,
+    super.key,
     required this.title,
+    required this.isAccountTitle,
+    required this.isAccountSubtitle,
     required this.authInputs,
-  }) : super(key: key);
+    required this.onTap,
+  });
 
   @override
   State<AuthBody> createState() => _AuthBodyState();
@@ -51,13 +57,32 @@ class _AuthBodyState extends State<AuthBody> {
               child: Column(
                   children: List.generate(widget.authInputs.length,
                       (index) => widget.authInputs[index]))),
-          const Spacer(),
-          Expanded(
-              flex: 2,
-              child: AuthenticationRow(
-                title: widget.title,
-                formKey: formKey,
-              )),
+          SpacingWidgets.emptyHeight,
+          SpacingWidgets.emptyHeight,
+          SpacingWidgets.emptyHeight,
+          AuthenticationRow(
+            title: widget.title,
+            formKey: formKey,
+            onPressed: () {
+              formKey.currentState!.validate();
+            },
+          ),
+          GestureDetector(
+            onTap: widget.onTap,
+            child: Center(
+              child: RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                    text: widget.isAccountTitle,
+                    style: Theme.of(context).textTheme.bodyMedium),
+                TextSpan(
+                    text: widget.isAccountSubtitle,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline))
+              ])),
+            ),
+          ),
           const Spacer(),
         ],
       ),

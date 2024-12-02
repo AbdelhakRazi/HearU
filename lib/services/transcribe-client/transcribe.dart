@@ -7,12 +7,12 @@ import 'package:hearu/services/aws-transcribe-service/aws_transcribe_streaming.d
 class Transcribe {
   Future transcribe() async {
     final transcribeStreamingClient = TranscribeStreamingClient(
-      region: 'eu-central-1',
+      region: 'us-east-1',
       // Provide credentials with `transcribe:StartStreamTranscription` permission
       credentialsProvider: StaticCredentialsProvider(AWSCredentials(
-        'ASIAIOEXAMPLEEXAMPLE', // accessKeyId
-        'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY', // secretAccessKey
-        'AQoDYXdzEJr...', // sessionToken
+        'AKIA2UC26WSC5HW7OKUH', // accessKeyId
+        'i45D8zA6yWO4kuLziNgqVl5Le1G0NvnMlQtw1Vh6', // secretAccessKey
+        null, //'AQoDYXdzEJr...', // sessionToken
         DateTime.now().add(const Duration(hours: 1)), // expiration
       )),
     );

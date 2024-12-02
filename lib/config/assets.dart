@@ -2,14 +2,14 @@ class Assets {
   Assets._();
   static const String logo = "assets/logo/logo.svg";
   static const String landingTitle =
-      "Capture thoughts,\nshape ideas,\nempower creativity:";
+      "Capture thoughts,\nshape ideas,\nempower creativity";
   static const String landingBody =
       "with hearU your imagination knows no bounds";
   static const List<String> onboardingTitles = [
-    "Record audio and get text:",
-    "Organize your recordings:",
-    "Customize your folders:",
-    "Easily share your recordings:"
+    "Record audio and get text",
+    "Organize your recordings",
+    "Customize your folders",
+    "Easily share your recordings"
   ];
   static const List<String> onboardingBody = [
     "Quickly convert your recordings into text notes",

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hearu/config/assets.dart';
 import 'package:hearu/config/colors.dart';
 import 'package:hearu/config/measures.dart';
+import 'package:hearu/views/authentication/login/login.dart';
 
 import 'authentication_row.dart';
 
@@ -36,7 +37,13 @@ class NavigationComponent extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const Spacer(),
-          Expanded(flex: 2, child: AuthenticationRow(title: "Sign in")),
+          Expanded(
+              flex: 2,
+              child: AuthenticationRow(
+                title: "Sign in",
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Login())),
+              )),
           const Spacer(),
         ],
       ),
