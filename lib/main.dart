@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hearu/bloc/auth_bloc.dart';
+import 'package:hearu/services/authentication/spring_auth_service.dart';
 import 'package:hearu/views/authentication/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:hearu/config/injection_locator.dart';
@@ -31,8 +33,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
+        ),
+        BlocProvider(create: (context) => AuthBloc(SpringAuthService()))
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,

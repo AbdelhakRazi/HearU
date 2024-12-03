@@ -1,11 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
-import 'package:hearu/config/colors.dart';
-import 'package:hearu/config/measures.dart';
-import 'package:hearu/config/spacing_widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hearu/bloc/auth_bloc.dart';
 import 'package:hearu/views/authentication/components/auth_input.dart';
-import 'package:hearu/views/landing/components/authentication_row.dart';
 
 class AuthBody extends StatefulWidget {
   final String title;
@@ -13,6 +9,7 @@ class AuthBody extends StatefulWidget {
   final String isAccountSubtitle;
   final List<AuthInput> authInputs;
   final VoidCallback onTap;
+
   const AuthBody({
     super.key,
     required this.title,
@@ -27,23 +24,35 @@ class AuthBody extends StatefulWidget {
 }
 
 class _AuthBodyState extends State<AuthBody> {
-  final GlobalKey<FormState> formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // Collect TextEditingController instances
+  Map<String, TextEditingController> _collectControllers() {
+    final controllers = <String, TextEditingController>{};
+    for (var input in widget.authInputs) {
+      if (input.textEditingController != null) {
+        controllers[input.label] = input.textEditingController!;
+      }
+    }
+    return controllers;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Measures.basicRadius),
-          color: AppColors.white,
-          boxShadow: [
-            BoxShadow(
-                color: AppColors.dark.withOpacity(0.1),
-                offset: const Offset(0, -5),
-                blurRadius: 20,
-                spreadRadius: 50)
-          ]),
-      padding: const EdgeInsets.symmetric(
-          horizontal: Measures.leftRightPadding,
-          vertical: Measures.topBottomPadding),
+        borderRadius: BorderRadius.circular(16.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(0, -5),
+            blurRadius: 20,
+            spreadRadius: 5,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,36 +60,59 @@ class _AuthBodyState extends State<AuthBody> {
             widget.title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          SpacingWidgets.emptyHeight,
+          const SizedBox(height: 20),
           Form(
-              key: formKey,
-              child: Column(
-                  children: List.generate(widget.authInputs.length,
-                      (index) => widget.authInputs[index]))),
-          SpacingWidgets.emptyHeight,
-          SpacingWidgets.emptyHeight,
-          SpacingWidgets.emptyHeight,
-          AuthenticationRow(
-            title: widget.title,
-            formKey: formKey,
+            key: formKey,
+            child: Column(
+              children: widget.authInputs,
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
             onPressed: () {
-              formKey.currentState!.validate();
+              if (formKey.currentState!.validate()) {
+                final controllers = _collectControllers();
+
+                // Trigger Bloc events based on title
+                if (widget.title == "Sign in") {
+                  BlocProvider.of<AuthBloc>(context).add(
+                    LoginEvent(
+                      email: controllers["Enter your email"]!.text,
+                      password: controllers["Enter your password"]!.text,
+                    ),
+                  );
+                } else if (widget.title == "Register") {
+                  BlocProvider.of<AuthBloc>(context).add(
+                    RegisterEvent(
+                      email: controllers["Enter your email"]!.text,
+                      password: controllers["Enter your password"]!.text,
+                    ),
+                  );
+                }
+              }
             },
+            child: Text(widget.title),
           ),
           GestureDetector(
             onTap: widget.onTap,
             child: Center(
               child: RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: widget.isAccountTitle,
-                    style: Theme.of(context).textTheme.bodyMedium),
-                TextSpan(
-                    text: widget.isAccountSubtitle,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline))
-              ])),
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: widget.isAccountTitle,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    TextSpan(
+                      text: widget.isAccountSubtitle,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           const Spacer(),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hearu/bloc/auth_bloc.dart';
 
 import 'package:hearu/config/assets.dart';
 import 'package:hearu/views/authentication/components/auth_body.dart';
