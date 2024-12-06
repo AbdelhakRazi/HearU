@@ -38,7 +38,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
         ),
-        BlocProvider(create: (context) => AuthBloc(SpringAuthService()))
+        BlocProvider(
+            create: (context) => AuthBloc(
+                SpringAuthService(baseUrl: "http://localhost:8080/api/v1")))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

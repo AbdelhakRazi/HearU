@@ -21,23 +21,13 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late TextEditingController passwordController;
-  late TextEditingController emailController;
-
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   late InputValidation inputValidation;
   @override
   void initState() {
     super.initState();
-    passwordController = TextEditingController();
-    emailController = TextEditingController();
     inputValidation = InputValidation(passwordController: passwordController);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    passwordController.dispose();
-    emailController.dispose();
   }
 
   @override
@@ -72,7 +62,7 @@ class _RegisterState extends State<Register> {
             ),
             AuthInput(
               hintText: "*****",
-              label: "Enter you password",
+              label: "Enter your password",
               obscured: true,
               textEditingController: passwordController,
               validation: inputValidation.validatePassword,

@@ -31,6 +31,7 @@ class _AuthBodyState extends State<AuthBody> {
     final controllers = <String, TextEditingController>{};
     for (var input in widget.authInputs) {
       if (input.textEditingController != null) {
+        print(input.label);
         controllers[input.label] = input.textEditingController!;
       }
     }
