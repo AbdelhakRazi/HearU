@@ -1,10 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hearu/bloc/auth_bloc.dart';
 import 'package:hearu/services/authentication/spring_auth_service.dart';
+import 'package:hearu/services/transcribe_api.dart';
 import 'package:hearu/views/authentication/login/login.dart';
 import 'package:hearu/views/folders/folders.dart';
+import 'package:hearu/views/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:hearu/config/injection_locator.dart';
 import 'package:hearu/config/theme.dart';
@@ -15,7 +19,6 @@ import 'package:hearu/views/onboarding/onboarding.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setup();
-
   final prefs = await SharedPreferences.getInstance();
   const secureStorage = FlutterSecureStorage();
 
@@ -69,7 +72,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         home: isFirstLaunch
             ? const OnBoarding()
-            : (initialToken != null ? const Folders() : const Login()),
+            : (initialToken != null ? const Home() : const Home()),
       ),
     );
   }

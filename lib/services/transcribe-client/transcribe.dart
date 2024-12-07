@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:aws_common/aws_common.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hearu/services/aws-transcribe-service/aws_transcribe_streaming.dart';
 
 class Transcribe {
-  Future transcribe() async {
+  Future transcribe(Stream<Uint8List> audioStream) async {
     final transcribeStreamingClient = TranscribeStreamingClient(
       region: 'us-east-1',
       // Provide credentials with `transcribe:StartStreamTranscription` permission
@@ -33,11 +34,11 @@ class Transcribe {
         ),
       );
     } on TranscribeStreamingException catch (e) {
-      print('Error starting transcription: $e');
+      debugPrint('Error starting transcription: $e');
       return;
     }
 
-    print('Session ID: ${response.sessionId}');
+    debugPrint('Session ID: ${response.sessionId}');
 
     final transcriptionCompleter = Completer<void>();
 
@@ -66,9 +67,6 @@ class Transcribe {
 
     // Instead use a real stream of audio data from the microphone
     // in PCM signed 16-bit little-endian audio format with 48kHz sample rate.
-    final audioStream = Stream<Uint8List>.periodic(
-            const Duration(milliseconds: 200), (count) => Uint8List(19200))
-        .take(25);
 
     // Send audio data to the audio stream sink.
     audioStreamSubscription = audioStream.listen(
