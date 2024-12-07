@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hearu/bloc/auth_bloc.dart';
 import 'package:hearu/services/authentication/spring_auth_service.dart';
 import 'package:hearu/views/authentication/login/login.dart';
+import 'package:hearu/views/folders/folders.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:hearu/config/injection_locator.dart';
 import 'package:hearu/config/theme.dart';
@@ -14,39 +16,60 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setup();
 
-  // Ensure SharedPreferences is initialized
   final prefs = await SharedPreferences.getInstance();
-  final bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+  const secureStorage = FlutterSecureStorage();
 
+  // Check for first launch
+  final bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
   // Set the first launch flag to false if it's the first time
   if (isFirstLaunch) {
     await prefs.setBool('isFirstLaunch', false);
   }
+  // Retrieve token from secure storage
+  final String? savedToken = await secureStorage.read(key: 'authToken');
 
-  runApp(MyApp(isFirstLaunch: isFirstLaunch));
+  runApp(MyApp(
+    isFirstLaunch: isFirstLaunch,
+    initialToken: savedToken,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final bool isFirstLaunch;
+  final String? initialToken;
 
-  const MyApp({super.key, required this.isFirstLaunch});
+  const MyApp({
+    super.key,
+    required this.isFirstLaunch,
+    required this.initialToken,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
+          create: (context) {
+            final authBloc = AuthBloc(
+              SpringAuthService(baseUrl: "http://localhost:8080/api/v1"),
+            );
+            // Initialize the AuthBloc with the token if it exists
+            if (initialToken != null) {
+              authBloc.add(InitializeAuthEvent(initialToken!));
+            }
+            return authBloc;
+          },
         ),
         BlocProvider(
-            create: (context) => AuthBloc(
-                SpringAuthService(baseUrl: "http://localhost:8080/api/v1")))
+          create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        // Show Onboarding or Landing based on isFirstLaunch
-        home: isFirstLaunch ? const OnBoarding() : const Login(),
+        home: isFirstLaunch
+            ? const OnBoarding()
+            : (initialToken != null ? const Folders() : const Login()),
       ),
     );
   }

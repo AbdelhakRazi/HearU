@@ -28,3 +28,12 @@ class RegisterEvent extends AuthEvent {
 }
 
 class LogoutEvent extends AuthEvent {}
+
+class InitializeAuthEvent extends AuthEvent {
+  final String token;
+
+  const InitializeAuthEvent(this.token);
+
+  @override
+  List<Object> get props => [token];
+}

@@ -7,7 +7,7 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthenticationService authenticationService;
-  String? _authToken; // Store the token
+  String? authToken; // Store the token
 
   AuthBloc(this.authenticationService) : super(AuthInitial()) {
     on<LoginEvent>(_onLogin);
@@ -21,7 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final token =
           await authenticationService.login(event.email, event.password);
       print(token);
-      _authToken = token; // Save the token
+      authToken = token; // Save the token
+      // Save token in FlutterSecureStorage
       emit(AuthSuccess());
     } catch (e) {
       emit(AuthFailure(message: e.toString()));
@@ -33,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final token =
           await authenticationService.register(event.email, event.password);
-      _authToken = token; // Store the token in the bloc
+      authToken = token; // Store the token in the bloc
       emit(AuthSuccess());
     } catch (e) {
       emit(AuthFailure(message: e.toString()));
@@ -45,10 +46,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await authenticationService.logout();
-      _authToken = null; // Clear the token
+      authToken = null; // Clear the token
       emit(AuthInitial());
     } catch (error) {
       emit(AuthFailure(message: error.toString()));
     }
+  }
+
+  Future<void> _onInitializeAuth(
+      InitializeAuthEvent event, Emitter<AuthState> emit) async {
+    authToken = event.token;
+    emit(
+        AuthSuccess()); // Emit success state since user is already authenticated
   }
 }
