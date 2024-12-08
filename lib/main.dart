@@ -9,6 +9,7 @@ import 'package:hearu/services/transcribe_api.dart';
 import 'package:hearu/views/authentication/login/login.dart';
 import 'package:hearu/views/folders/folders.dart';
 import 'package:hearu/views/home/home.dart';
+import 'package:hearu/views/recording/recording.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:hearu/config/injection_locator.dart';
 import 'package:hearu/config/theme.dart';

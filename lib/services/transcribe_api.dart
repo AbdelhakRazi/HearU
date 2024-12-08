@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:aws_common/aws_common.dart';
 import 'package:aws_signature_v4/aws_signature_v4.dart';
 import 'package:hearu/services/aws-transcribe-service/src/event_stream/message_signer.dart';
+import 'package:hearu/services/aws-transcribe-service/src/event_stream/stream_codec.dart';
 import 'package:hearu/services/aws-transcribe-service/src/protocol.dart';
 import 'package:http2/http2.dart';
 
@@ -41,12 +44,13 @@ class TranscribeService {
     return signedRequest.headers
       ..addAll({
         'x-amzn-transcribe-language-code': 'en-US',
-        'x-amzn-transcribe-sample-rate': '16000',
+        'x-amzn-transcribe-sample-rate': '48000',
         'x-amzn-transcribe-media-encoding': 'pcm'
       });
   }
 
-  Future<void> startTranscription(Stream<Uint8List> audioStream) async {
+  Future<void> startTranscription(Stream<Uint8List> audioStream,
+      StreamController<String> textStream) async {
     final headers = await _generateAwsHeaders();
     final socket = await SecureSocket.connect(
       'transcribestreaming.us-east-1.amazonaws.com',
@@ -63,29 +67,48 @@ class TranscribeService {
               MapEntry(key, Header.ascii(key, value)))
           .values
     ]);
+    // Maintain the latest displayed text
+    // Track the cumulative transcript
     stream.incomingMessages.listen((message) {
-      print("receiving");
-      if (message is HeadersStreamMessage) {
-        message.headers.forEach((header) {
-          print(header.toString());
-        });
-      } else if (message is DataStreamMessage) {
-        // Handle incoming transcription data
-        print('Transcription: ${String.fromCharCodes(message.bytes)}');
+      if (message is DataStreamMessage) {
+        // Parse the raw bytes of the message
+        final payload = message.bytes;
+
+        try {
+          // Decode the EventStream message format
+          final eventStreamMessage =
+              EventStreamCodec.decode(Uint8List.fromList(payload));
+          final jsonString =
+              utf8.decode(eventStreamMessage.payload, allowMalformed: true);
+
+          // Process the JSON data
+          final json = jsonDecode(jsonString);
+          final transcriptResults = json['Transcript']['Results'];
+
+          for (var result in transcriptResults) {
+            final isPartial = result['IsPartial'];
+            final text = result['Alternatives'][0]['Transcript'];
+
+            if (isPartial) {
+              textStream.add(text);
+              print('Partial Transcript: $text');
+            } else {
+              print('Final Transcript: $text');
+            }
+          }
+        } catch (e) {
+          print('Error decoding message: $e');
+        }
       }
     });
+
     audioStream
-        .transform(AudioDataChunker(6400))
+        .transform(const AudioDataChunker(6400))
         .transform(const AudioEventEncoder())
         .transform(const EventStreamEncoder())
         .transform(AudioMessageSigner(messageSigner))
         .transform(const EventStreamEncoder())
         .transform(const DataStreamMessageEncoder())
         .listen(stream.outgoingMessages.add);
-    /*audioStream.listen((data) {
-      print("sending");
-      stream.outgoingMessages.add(DataStreamMessage(data));
-    });*/
-    //stream.outgoingMessages.add(DataStreamMessage(buffer.cast<Int16List>()));
   }
 }
