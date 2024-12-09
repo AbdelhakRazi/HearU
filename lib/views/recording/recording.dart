@@ -14,13 +14,11 @@ class Recording extends StatefulWidget {
 
 class _RecordingState extends State<Recording> {
   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  final List<double> _waveformAmplitudes = [];
   StreamController<Uint8List>? _audioStreamController;
   StreamController<String>? _textStreamController; // For transcribed words
   bool _isRecording = false;
 
   String _transcribedText = ""; // Single string for the text widget
-  late StreamSubscription<String> _transcriptionSubscription;
 
   @override
   void initState() {
@@ -31,49 +29,22 @@ class _RecordingState extends State<Recording> {
   Future<void> _initializeRecorder() async {
     await _recorder.openRecorder();
     await _recorder.setSubscriptionDuration(const Duration(milliseconds: 50));
-    // _recorder.logger.close();
   }
 
   void _startRecording() async {
     setState(() => _isRecording = true);
-
-    // Create a StreamController for audio data
-    // Initialize StreamControllers
     _audioStreamController = StreamController<Uint8List>();
     _textStreamController = StreamController<String>();
-
-    // Start transcription
     TranscribeService transcribe = TranscribeService();
     transcribe.startTranscription(
       _audioStreamController!.stream,
       _textStreamController!,
     );
-    // Listen to the text stream and update the single Text widget
-    _transcriptionSubscription = _textStreamController!.stream.listen((word) {
+    _textStreamController!.stream.listen((word) {
       setState(() {
-        _transcribedText += "$word "; // Append each new word to the string
+        _transcribedText += "$word ";
       });
     });
-    /*_audioStreamController!.stream.listen((data) {
-      // Convert PCM data from Uint8List to Int16List
-      final pcmData = data.buffer.asInt16List();
-
-      // Calculate the maximum amplitude
-      final maxAmplitude = pcmData.isNotEmpty
-          ? pcmData
-              .map((e) => e.abs())
-              .reduce((a, b) => a > b ? a : b)
-              .toDouble()
-          : 0.0;
-
-      setState(() {
-        _waveformAmplitudes.add(maxAmplitude / 32767.0); // Normalize
-        if (_waveformAmplitudes.length > 100) {
-          _waveformAmplitudes.removeAt(0); // Manage waveform length
-        }
-      });
-    });*/
-
     await _recorder.startRecorder(
       codec: Codec.pcm16,
       numChannels: 1, // Mono audio
@@ -92,6 +63,7 @@ class _RecordingState extends State<Recording> {
   void dispose() {
     _recorder.closeRecorder();
     _audioStreamController?.close();
+    _textStreamController?.close();
     super.dispose();
   }
 
@@ -125,20 +97,20 @@ class _RecordingState extends State<Recording> {
             const SizedBox(
               height: 10,
             ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.3,
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
                   color: AppColors.blueMain.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: SingleChildScrollView(
-                  child: Text(
-                    _transcribedText, // Display concatenated text
-                    style: const TextStyle(
-                      color: AppColors.dark,
-                      fontSize: 16,
-                    ),
+                  border: Border.all(color: AppColors.blueMain)),
+              child: SingleChildScrollView(
+                child: Text(
+                  _transcribedText, // Display concatenated text
+                  style: const TextStyle(
+                    color: AppColors.dark,
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -149,19 +121,17 @@ class _RecordingState extends State<Recording> {
             SizedBox(
               width: MediaQuery.of(context).size.width / 3,
               child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: _isRecording
-                          ? AppColors.blueMain
-                          : AppColors.dark.withOpacity(0.4)),
-                  child: const Text("SAVE")),
-            ),
-            Expanded(
-              child: Center(
-                child: CustomPaint(
-                  size: const Size(double.infinity, 100),
-                  painter: WaveformPainter(_waveformAmplitudes),
+                onPressed: _transcribedText != ""
+                    ? () async {
+                        await _showNameNoteDialog(context);
+                      }
+                    : null, // Disable button if _transcribedText is empty
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _transcribedText != ""
+                      ? AppColors.blueMain
+                      : AppColors.dark.withOpacity(0.4),
                 ),
+                child: const Text("SAVE"),
               ),
             ),
           ],
@@ -169,36 +139,58 @@ class _RecordingState extends State<Recording> {
       ),
     );
   }
-}
 
-class WaveformPainter extends CustomPainter {
-  final List<double> amplitudes;
+  Future<void> _showNameNoteDialog(BuildContext context) async {
+    String noteName = ""; // Temporary variable to store the note name
+    final TextEditingController nameController = TextEditingController();
 
-  WaveformPainter(this.amplitudes);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blue
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-
-    final path = Path();
-    final waveHeight = size.height / 2;
-
-    for (int i = 0; i < amplitudes.length; i++) {
-      final x = i * (size.width / amplitudes.length);
-      final y = waveHeight - amplitudes[i] * waveHeight;
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-
-    canvas.drawPath(path, paint);
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("How would you like to name the note?"),
+          content: TextField(
+            controller: nameController,
+            decoration: const InputDecoration(
+              hintText: "Enter note name",
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              noteName = value; // Update note name as user types
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (noteName.trim().isEmpty) {
+                  // Show an error if name is empty
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Note name cannot be empty!"),
+                    ),
+                  );
+                  return;
+                }
+                // Save the note with the provided name
+                _saveNote(noteName);
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Save"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  void _saveNote(String noteName) {
+    // Implement your save logic here, e.g., saving to a database
+    print("Note saved with name: $noteName");
+  }
 }
