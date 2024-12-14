@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hearu/bloc/auth_bloc.dart';
 import 'package:hearu/bloc/notes_bloc.dart';
 import 'package:hearu/services/authentication/spring_auth_service.dart';
+import 'package:hearu/services/notes/favorites_service.dart';
 import 'package:hearu/services/notes/notes_service.dart';
 import 'package:hearu/views/folders/folders.dart';
 import 'package:hearu/views/home/home.dart';
@@ -66,8 +67,9 @@ class MyApp extends StatelessWidget {
           },
         ),
         BlocProvider(
-            create: (context) => NotesBloc(
-                NotesService("https://hearu-latest.onrender.com/api/v1"))),
+            create: (context) => NotesBloc(NotesService(
+                "https://hearu-latest.onrender.com/api/v1",
+                FavoritesService()))),
         BlocProvider(
           create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
         ),

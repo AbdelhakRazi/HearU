@@ -12,6 +12,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   NotesBloc(this.notesService) : super(NotesInitial()) {
     on<FetchNotesEvent>(_onFetchNotes);
     on<SaveNoteEvent>(_onSaveNote);
+    on<DeleteNoteEvent>(_onDeleteNote);
   }
 
   Future<void> _onFetchNotes(
@@ -33,6 +34,17 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       add(FetchNotesEvent(authToken: event.authToken)); // Refresh the list
     } catch (e) {
       emit(const NotesError('Failed to save note'));
+    }
+  }
+
+  Future<void> _onDeleteNote(
+      DeleteNoteEvent event, Emitter<NotesState> emit) async {
+    try {
+      await notesService.deleteNote(event.noteId, event.authToken);
+      // Refresh the notes list after deletion
+      add(FetchNotesEvent(authToken: event.authToken));
+    } catch (e) {
+      emit(const NotesError('Failed to delete note'));
     }
   }
 }

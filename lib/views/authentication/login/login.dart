@@ -7,7 +7,6 @@ import 'package:hearu/views/authentication/components/auth_input.dart';
 import 'package:hearu/views/authentication/components/auth_layout.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hearu/views/folders/folders.dart';
 import 'package:hearu/views/home/home.dart';
 
 class Login extends StatefulWidget {

@@ -1,13 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:hearu/bloc/auth_bloc.dart';
 import 'package:hearu/bloc/notes_bloc.dart';
 import 'package:hearu/config/assets.dart';
 import 'package:hearu/config/colors.dart';
-import 'package:hearu/services/notes/notes_service.dart';
+import 'package:hearu/views/home/note_card.dart';
 import 'package:hearu/views/recording/recording.dart';
 
 class Home extends StatefulWidget {
@@ -28,7 +30,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        print(state);
         if (state is AuthSuccess) {
           BlocProvider.of<NotesBloc>(context).add(FetchNotesEvent(
               authToken: BlocProvider.of<AuthBloc>(context).authToken!));
@@ -41,6 +42,14 @@ class _HomeState extends State<Home> {
             height: 54,
             width: 54,
           ),
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.settings,
+                  size: 34,
+                ))
+          ],
         ),
         body: Stack(
           children: [
@@ -102,9 +111,9 @@ class _HomeState extends State<Home> {
             // DraggableScrollableSheet
             DraggableScrollableSheet(
               expand: true, // Allow it to take its full height during scrolling
-              initialChildSize: 0.1, // Start with 10% of the screen height
-              minChildSize: 0.1, // Minimum size when collapsed
-              maxChildSize: 0.95, // Maximum size when fully expanded
+              initialChildSize: 0.15, // Start with 10% of the screen height
+              minChildSize: 0.15, // Minimum size when collapsed
+              maxChildSize: 0.7, // Maximum size when fully expanded
               builder:
                   (BuildContext context, ScrollController scrollController) {
                 return Container(
@@ -144,10 +153,8 @@ class _HomeState extends State<Home> {
                       // Header row
                       SliverToBoxAdapter(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 5,
-                          ),
+                          padding: const EdgeInsets.only(
+                              left: 30, right: 30, top: 5, bottom: 30),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -161,7 +168,7 @@ class _HomeState extends State<Home> {
                                     noteCount = state.notes.length;
                                   }
                                   return Text(
-                                    "$noteCount notes",
+                                    "$noteCount ${noteCount == 1 ? 'note' : 'notes'}",
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                   );
@@ -174,22 +181,12 @@ class _HomeState extends State<Home> {
                       // Sliver list of notes
                       BlocBuilder<NotesBloc, NotesState>(
                         builder: (context, state) {
+                          print(state);
                           if (state is NotesLoaded) {
                             return SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  return ListTile(
-                                    leading: const Icon(Icons.note),
-                                    title: Text(state.notes[index].title),
-                                    subtitle: Text(
-                                      state.notes[index].content,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    onTap: () {
-                                      // Handle note tap
-                                    },
-                                  );
+                                  return NoteCard(note: state.notes[index]);
                                 },
                                 childCount: state.notes.length,
                               ),
