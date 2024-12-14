@@ -15,11 +15,8 @@ class NotesService {
         'Authorization': 'Bearer $authToken',
       },
     );
-    print(response.statusCode);
-    print(response.request);
     if (response.statusCode == 200) {
       final List<dynamic> notesJson = json.decode(response.body);
-      print(notesJson);
       return notesJson.map((json) => Note.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch notes');
