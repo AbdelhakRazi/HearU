@@ -91,9 +91,6 @@ class TranscribeService {
 
             if (isPartial) {
               textStream.add(text);
-              print('Partial Transcript: $text');
-            } else {
-              print('Final Transcript: $text');
             }
           }
         } catch (e) {

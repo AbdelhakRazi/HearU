@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hearu/bloc/auth_bloc.dart';
+import 'package:hearu/bloc/notes_bloc.dart';
 import 'package:hearu/services/authentication/spring_auth_service.dart';
-import 'package:hearu/services/transcribe_api.dart';
-import 'package:hearu/views/authentication/login/login.dart';
+import 'package:hearu/services/notes/notes_service.dart';
 import 'package:hearu/views/folders/folders.dart';
 import 'package:hearu/views/home/home.dart';
 import 'package:hearu/views/recording/recording.dart';
@@ -55,7 +55,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final authBloc = AuthBloc(
-              SpringAuthService(baseUrl: "http://localhost:8080/api/v1"),
+              SpringAuthService(
+                  baseUrl: "https://hearu-latest.onrender.com/api/v1"),
             );
             // Initialize the AuthBloc with the token if it exists
             if (initialToken != null) {
@@ -65,6 +66,9 @@ class MyApp extends StatelessWidget {
           },
         ),
         BlocProvider(
+            create: (context) => NotesBloc(
+                NotesService("https://hearu-latest.onrender.com/api/v1"))),
+        BlocProvider(
           create: (context) => OnboardingAnimationBloc(opacities: [1, 0, 0, 0]),
         ),
       ],
@@ -73,7 +77,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         home: isFirstLaunch
             ? const OnBoarding()
-            : (initialToken != null ? const Home() : const Home()),
+            : (initialToken != null ? const Home() : const Landing()),
       ),
     );
   }

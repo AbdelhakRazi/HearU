@@ -68,6 +68,10 @@ class AppTheme {
             fontSize: 20,
             color: AppColors.baseWhite,
             fontWeight: FontWeight.w600),
+        headlineSmall: TextStyle(
+            fontSize: 22,
+            color: AppColors.blueMain,
+            fontWeight: FontWeight.w600),
         bodyLarge: TextStyle(fontSize: 14, color: AppColors.dark),
         bodyMedium: TextStyle(fontSize: 14, color: AppColors.blueMain),
       )));

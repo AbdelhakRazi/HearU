@@ -14,9 +14,7 @@ class FlutterSoundRecorderService extends RecorderService {
   FlutterSoundRecorderService({
     required this.recorder,
     required this.audioRecorderController,
-  }) {
-    debugPrint("flutter sound service created");
-  }
+  });
   @override
   Future<void> startRecording() async {
     final isGranted = await _checkPermissions();

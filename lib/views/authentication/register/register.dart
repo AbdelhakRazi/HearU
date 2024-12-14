@@ -7,6 +7,7 @@ import 'package:hearu/utils/input_validation.dart';
 import 'package:hearu/views/authentication/components/auth_input.dart';
 import 'package:hearu/views/authentication/components/auth_layout.dart';
 import 'package:hearu/views/folders/folders.dart';
+import 'package:hearu/views/home/home.dart';
 
 class Register extends StatefulWidget {
   final bool showBackButton; // New property
@@ -40,7 +41,7 @@ class _RegisterState extends State<Register> {
           } else if (state is AuthSuccess) {
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const Folders()),
+                MaterialPageRoute(builder: (context) => const Home()),
                 (route) => false);
           }
         },

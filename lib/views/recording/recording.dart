@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:hearu/bloc/auth_bloc.dart';
+import 'package:hearu/bloc/notes_bloc.dart';
 import 'package:hearu/config/colors.dart';
+import 'package:hearu/model/note.dart';
 import 'package:hearu/services/transcribe_api.dart';
 
 class Recording extends StatefulWidget {
@@ -73,68 +77,77 @@ class _RecordingState extends State<Recording> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            TextButton(
-              onPressed: _isRecording ? _stopRecording : _startRecording,
-              child: Text(_isRecording ? 'Stop Recording' : 'Start Recording',
-                  style: const TextStyle(
-                      color: AppColors.blueMain,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20)),
-            ),
-            const SizedBox(height: 20),
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "Text of the note :",
-                style: TextStyle(
-                    color: AppColors.dark,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+        child: BlocListener<NotesBloc, NotesState>(
+          listener: (context, state) async {
+            if (state is NoteSaved) {
+              await _showSuccessDialog(context);
+            } else if (state is NoteSaved) {
+              await _showErrorDialog(context);
+            }
+          },
+          child: Column(
+            children: [
+              TextButton(
+                onPressed: _isRecording ? _stopRecording : _startRecording,
+                child: Text(_isRecording ? 'Stop Recording' : 'Start Recording',
+                    style: const TextStyle(
+                        color: AppColors.blueMain,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20)),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.3,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  color: AppColors.blueMain.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(color: AppColors.blueMain)),
-              child: SingleChildScrollView(
+              const SizedBox(height: 20),
+              const Align(
+                alignment: Alignment.topLeft,
                 child: Text(
-                  _transcribedText, // Display concatenated text
-                  style: const TextStyle(
-                    color: AppColors.dark,
-                    fontSize: 16,
+                  "Text of the note :",
+                  style: TextStyle(
+                      color: AppColors.dark,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.3,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    color: AppColors.blueMain.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(color: AppColors.blueMain)),
+                child: SingleChildScrollView(
+                  child: Text(
+                    _transcribedText, // Display concatenated text
+                    style: const TextStyle(
+                      color: AppColors.dark,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              child: ElevatedButton(
-                onPressed: _transcribedText != ""
-                    ? () async {
-                        await _showNameNoteDialog(context);
-                      }
-                    : null, // Disable button if _transcribedText is empty
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _transcribedText != ""
-                      ? AppColors.blueMain
-                      : AppColors.dark.withOpacity(0.4),
-                ),
-                child: const Text("SAVE"),
+              const SizedBox(
+                height: 10,
               ),
-            ),
-          ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 3,
+                child: ElevatedButton(
+                  onPressed: _transcribedText != ""
+                      ? () async {
+                          await _showNameNoteDialog(context);
+                        }
+                      : null, // Disable button if _transcribedText is empty
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _transcribedText != ""
+                        ? AppColors.blueMain
+                        : AppColors.dark.withOpacity(0.4),
+                  ),
+                  child: const Text("SAVE"),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -179,7 +192,6 @@ class _RecordingState extends State<Recording> {
                 }
                 // Save the note with the provided name
                 _saveNote(noteName);
-                Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text("Save"),
             ),
@@ -191,6 +203,48 @@ class _RecordingState extends State<Recording> {
 
   void _saveNote(String noteName) {
     // Implement your save logic here, e.g., saving to a database
-    print("Note saved with name: $noteName");
+    BlocProvider.of<NotesBloc>(context).add(SaveNoteEvent(
+        Note(
+            title: noteName,
+            content: _transcribedText,
+            audioLength: 0,
+            audioPath: ""),
+        BlocProvider.of<AuthBloc>(context).authToken!));
+    Navigator.of(context).pop(); // Close the dialog
+  }
+
+  Future<void> _showSuccessDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            icon: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel)),
+            title: const Text("Note saved!"),
+            content: const Text("Your note has been saved successfully"));
+      },
+    );
+  }
+
+  Future<void> _showErrorDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            icon: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.cancel)),
+            title: const Text("Cannot save the note!"),
+            content: const Text(
+                "Your note has not been saved. Please retry again!"));
+      },
+    );
   }
 }

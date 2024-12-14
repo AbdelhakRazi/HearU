@@ -8,6 +8,7 @@ import 'package:hearu/views/authentication/components/auth_layout.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hearu/views/folders/folders.dart';
+import 'package:hearu/views/home/home.dart';
 
 class Login extends StatefulWidget {
   final bool showBackButton;
@@ -32,7 +33,7 @@ class _LoginState extends State<Login> {
         } else if (state is AuthSuccess) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const Folders()),
+              MaterialPageRoute(builder: (context) => const Home()),
               (route) => false);
         }
       },
