@@ -54,34 +54,38 @@ class AuthLayout extends StatelessWidget {
           Positioned(
             bottom: 0,
             child: SizedBox(
-              height: screenSize.height * 0.75,
+              height: MediaQuery.of(context).viewInsets.bottom > 0
+                  ? screenSize.height * 0.5
+                  : screenSize.height * 0.75,
               width: screenSize.width,
-              child: AuthBody(
-                title: title,
-                isAccountTitle: isLogin
-                    ? "Don't have an account?"
-                    : "Already have an account?",
-                isAccountSubtitle: isLogin ? " Register" : " Login",
-                onTap: () {
-                  if (isLogin) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Register(
-                                showBackButton: true,
-                              )),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Login(
-                                showBackButton: true,
-                              )),
-                    );
-                  }
-                },
-                authInputs: authInputs,
+              child: SingleChildScrollView(
+                child: AuthBody(
+                  title: title,
+                  isAccountTitle: isLogin
+                      ? "Don't have an account?"
+                      : "Already have an account?",
+                  isAccountSubtitle: isLogin ? " Register" : " Login",
+                  onTap: () {
+                    if (isLogin) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Register(
+                                  showBackButton: true,
+                                )),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Login(
+                                  showBackButton: true,
+                                )),
+                      );
+                    }
+                  },
+                  authInputs: authInputs,
+                ),
               ),
             ),
           ),

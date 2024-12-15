@@ -40,7 +40,7 @@ class NavigationComponent extends StatelessWidget {
           Expanded(
               flex: 2,
               child: AuthenticationRow(
-                title: "Sign in",
+                title: "Sign In",
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login())),
               )),

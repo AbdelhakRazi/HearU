@@ -8,6 +8,7 @@ import 'package:hearu/bloc/notes_bloc.dart';
 import 'package:hearu/services/authentication/spring_auth_service.dart';
 import 'package:hearu/services/notes/favorites_service.dart';
 import 'package:hearu/services/notes/notes_service.dart';
+import 'package:hearu/views/authentication/login/login.dart';
 import 'package:hearu/views/folders/folders.dart';
 import 'package:hearu/views/home/home.dart';
 import 'package:hearu/views/recording/recording.dart';
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         home: isFirstLaunch
             ? const OnBoarding()
-            : (initialToken != null ? const Home() : const Landing()),
+            : (initialToken != null ? const Login() : const Landing()),
       ),
     );
   }

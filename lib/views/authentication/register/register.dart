@@ -48,7 +48,7 @@ class _RegisterState extends State<Register> {
         child: AuthLayout(
           showBackButton: widget.showBackButton,
           isLogin: false,
-          title: "Register",
+          title: "Create an account",
           authInputs: [
             AuthInput(
               hintText: "username123",
