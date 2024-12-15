@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         home: isFirstLaunch
             ? const OnBoarding()
-            : (initialToken != null ? const Login() : const Landing()),
+            : (initialToken != null ? const Home() : const Landing()),
       ),
     );
   }

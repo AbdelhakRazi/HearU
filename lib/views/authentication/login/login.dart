@@ -29,12 +29,12 @@ class _LoginState extends State<Login> {
         if (state is AuthFailure) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(state.message)));
-        } // else if (state is AuthSuccess) {
-        //   Navigator.pushAndRemoveUntil(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => const Home()),
-        //       (route) => false);
-        // }
+        } else if (state is AuthSuccess) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const Home()),
+              (route) => false);
+        }
       },
       child: AuthLayout(
         showBackButton: widget.showBackButton,
