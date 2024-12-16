@@ -39,20 +39,35 @@ class _RecordingState extends State<Recording> {
     setState(() => _isRecording = true);
     _audioStreamController = StreamController<Uint8List>();
     _textStreamController = StreamController<String>();
+    String _lastFullText = ""; // Track the last complete transcription
+
     TranscribeService transcribe = TranscribeService();
     transcribe.startTranscription(
       _audioStreamController!.stream,
       _textStreamController!,
     );
-    _textStreamController!.stream.listen((word) {
+
+    _textStreamController!.stream.listen((partialText) {
       setState(() {
-        _transcribedText += "$word ";
+        // Find and append only the new part of the transcription
+        if (partialText.startsWith(_lastFullText)) {
+          // Extract the new part by removing the old prefix
+          String newText = partialText.substring(_lastFullText.length).trim();
+          _transcribedText += "$newText ";
+        } else {
+          // If it's completely different, replace the text (fallback)
+          _transcribedText += "$partialText ";
+        }
+
+        // Update the last full transcription
+        _lastFullText = partialText;
       });
     });
+
     await _recorder.startRecorder(
       codec: Codec.pcm16,
       numChannels: 1, // Mono audio
-      sampleRate: 48000, // Required sample rat
+      sampleRate: 48000, // Required sample rate
       toStream: _audioStreamController!.sink,
     );
   }
