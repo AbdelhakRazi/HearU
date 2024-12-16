@@ -9,7 +9,8 @@ import 'package:hearu/bloc/auth_bloc.dart';
 import 'package:hearu/bloc/notes_bloc.dart';
 import 'package:hearu/config/assets.dart';
 import 'package:hearu/config/colors.dart';
-import 'package:hearu/views/home/note_card.dart';
+import 'package:hearu/views/notes/note_card.dart';
+import 'package:hearu/views/notes/notes.dart';
 import 'package:hearu/views/recording/recording.dart';
 
 class Home extends StatefulWidget {
@@ -20,12 +21,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int noteCount = 0; // Replace with your dynamic note count
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
@@ -108,103 +103,7 @@ class _HomeState extends State<Home> {
               ),
             ),
 
-            // DraggableScrollableSheet
-            DraggableScrollableSheet(
-              expand: true, // Allow it to take its full height during scrolling
-              initialChildSize: 0.15, // Start with 10% of the screen height
-              minChildSize: 0.15, // Minimum size when collapsed
-              maxChildSize: 0.7, // Maximum size when fully expanded
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(40),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, -5),
-                      ),
-                    ],
-                  ),
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    slivers: [
-                      // Drag handle
-                      SliverToBoxAdapter(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Container(
-                              width: 60,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                color: AppColors.blueMain,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Header row
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 30, right: 30, top: 5, bottom: 30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "My Notes",
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              BlocBuilder<NotesBloc, NotesState>(
-                                builder: (context, state) {
-                                  if (state is NotesLoaded) {
-                                    noteCount = state.notes.length;
-                                  }
-                                  return Text(
-                                    "$noteCount ${noteCount == 1 ? 'note' : 'notes'}",
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Sliver list of notes
-                      BlocBuilder<NotesBloc, NotesState>(
-                        builder: (context, state) {
-                          print(state);
-                          if (state is NotesLoaded) {
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                  return NoteCard(note: state.notes[index]);
-                                },
-                                childCount: state.notes.length,
-                              ),
-                            );
-                          } else if (state is NotesLoading) {
-                            return const SliverToBoxAdapter(
-                                child:
-                                    Center(child: CircularProgressIndicator()));
-                          } else {
-                            return const SliverToBoxAdapter(child: SizedBox());
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+            const Notes()
           ],
         ),
       ),
