@@ -8,13 +8,14 @@ import 'package:hearu/services/aws-transcribe-service/src/event_stream/message_s
 import 'package:hearu/services/aws-transcribe-service/src/event_stream/stream_codec.dart';
 import 'package:hearu/services/aws-transcribe-service/src/protocol.dart';
 import 'package:http2/http2.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class TranscribeService {
   late EventStreamMessageSigner messageSigner;
   Future<Map<String, String>> _generateAwsHeaders() async {
     final credentials = StaticCredentialsProvider(AWSCredentials(
-      'AKIA2UC26WSC5HW7OKUH', // accessKeyId
-      'i45D8zA6yWO4kuLziNgqVl5Le1G0NvnMlQtw1Vh6', // secretAccessKey
+      dotenv.env["ACCESS_KEY"], // accessKeyId
+      dotenv.env["SECRET_KEY"], // secretAccessKey
       null, //'AQoDYXdzEJr...', // sessionToken
       DateTime.now().add(const Duration(hours: 1)), // expiration
     ));
